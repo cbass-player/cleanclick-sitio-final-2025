@@ -1,5 +1,49 @@
 document.addEventListener('DOMContentLoaded', () => {
-    document.body.style.opacity = '1';
+    // Asegurar que el body se muestre solo cuando todo esté listo
+    const showBody = () => {
+        document.body.classList.add('loaded');
+    };
+    
+    // Mostrar el body inmediatamente si Tailwind ya está cargado
+    if (window.tailwind) {
+        showBody();
+    } else {
+        // Esperar a que Tailwind se cargue o timeout de 1 segundo
+        let tailwindCheck = 0;
+        const checkTailwind = () => {
+            tailwindCheck++;
+            if (window.tailwind || tailwindCheck > 20) {
+                showBody();
+            } else {
+                setTimeout(checkTailwind, 50);
+            }
+        };
+        checkTailwind();
+    }
+
+    // Detectar dispositivo móvil usando solo window.innerWidth (más eficiente)
+    const isMobile = window.innerWidth <= 768;
+
+    // Calcular altura del header pegajoso y aplicar como variable CSS
+    const calculateHeaderHeight = () => {
+        const stickyHeader = document.querySelector('.sticky');
+        if (stickyHeader) {
+            const headerHeight = stickyHeader.offsetHeight;
+            document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
+        }
+    };
+    
+    // Calcular altura inicial usando requestAnimationFrame para optimizar rendimiento
+    requestAnimationFrame(calculateHeaderHeight);
+    
+    // Resize optimizado - solo recalcular cuando sea necesario
+    let resizeTimeout;
+    const debouncedResize = () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(calculateHeaderHeight, 150);
+    };
+    
+    window.addEventListener('resize', debouncedResize, { passive: true });
 
     const menuToggle = document.getElementById('menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
@@ -7,72 +51,123 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatPopup = document.getElementById('chat-popup');
     const closePopupBtn = document.getElementById('close-popup');
 
-    const openPopup = () => { if (chatPopup) { chatPopup.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none'); } };
-    const closePopup = () => { if (chatPopup) { chatPopup.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none'); } };
-    const closeMenu = () => { if (mobileMenu) { mobileMenu.classList.add('opacity-0', 'scale-95', 'invisible'); } };
-    const openMenu = () => { closePopup(); if (mobileMenu) { mobileMenu.classList.remove('opacity-0', 'scale-95', 'invisible'); } };
+    // Funciones optimizadas para popup y menú
+    const openPopup = () => chatPopup?.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+    const closePopup = () => chatPopup?.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+    const closeMenu = () => mobileMenu?.classList.add('opacity-0', 'scale-95', 'invisible');
+    const openMenu = () => { closePopup(); mobileMenu?.classList.remove('opacity-0', 'scale-95', 'invisible'); };
 
-    if (menuToggle) {
-        menuToggle.addEventListener('click', (e) => {
+    // Event listener optimizado para menú
+    menuToggle?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        mobileMenu.classList.contains('invisible') ? openMenu() : closeMenu();
+    });
+
+    // Event listeners optimizados para popups
+    allPopupTriggers.forEach(button => {
+        button.addEventListener('click', (e) => {
             e.stopPropagation();
-            const isMenuOpen = !mobileMenu.classList.contains('invisible');
-            if (isMenuOpen) { closeMenu(); } else { openMenu(); }
+            const isPopupOpen = chatPopup && !chatPopup.classList.contains('opacity-0');
+            
+            if (button.id === 'cta-flotante' && isPopupOpen) {
+                closePopup();
+            } else {
+                if (mobileMenu && !mobileMenu.classList.contains('invisible')) { closeMenu(); }
+                openPopup();
+                attachAutoCloseListeners();
+            }
         });
-    }
+    });
 
-    if (allPopupTriggers.length > 0) {
-        allPopupTriggers.forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const isPopupOpen = chatPopup && !chatPopup.classList.contains('opacity-0');
-                if (button.id === 'cta-flotante') {
-                    if (isPopupOpen) { closePopup(); }
-                    else {
-                        if (mobileMenu && !mobileMenu.classList.contains('invisible')) { closeMenu(); }
-                        openPopup();
-                    }
-                } else {
-                    if (mobileMenu && !mobileMenu.classList.contains('invisible')) { closeMenu(); }
-                    openPopup();
-                }
-            });
-        });
-    }
-
-    if (closePopupBtn) { closePopupBtn.addEventListener('click', (e) => { e.stopPropagation(); closePopup(); }); }
+    // Event listener optimizado para cerrar popup
+    closePopupBtn?.addEventListener('click', (e) => { 
+        e.stopPropagation(); 
+        closePopup(); 
+    });
 
     document.addEventListener('click', (e) => {
         if (mobileMenu && !mobileMenu.classList.contains('invisible') && !mobileMenu.contains(e.target) && !menuToggle.contains(e.target)) { closeMenu(); }
         if (chatPopup && !chatPopup.classList.contains('opacity-0') && !chatPopup.contains(e.target) && !e.target.closest('.open-chat-popup')) { closePopup(); }
     });
 
+    // Cierre auto del pop-up solo en dispositivos no táctiles (mantener dinámica móvil)
+    const isTouchDevice = () => (
+        'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0
+    );
+    const interactionCloseHandler = () => {
+        if (chatPopup && !chatPopup.classList.contains('opacity-0')) {
+            closePopup();
+        }
+        window.removeEventListener('scroll', interactionCloseHandler, { passive: true });
+        document.removeEventListener('pointerdown', interactionCloseHandler, true);
+        document.removeEventListener('keydown', interactionCloseHandler, true);
+    };
+    const attachAutoCloseListeners = () => {
+        // En todos los dispositivos, cerrar al hacer scroll
+        window.addEventListener('scroll', interactionCloseHandler, { passive: true });
+        // En no táctiles, también cerrar por clic/tecla
+        if (!isTouchDevice()) {
+            document.addEventListener('pointerdown', interactionCloseHandler, true);
+            document.addEventListener('keydown', interactionCloseHandler, true);
+        }
+    };
+
+    // Smooth scroll simplificado y optimizado
+    const handleSmoothScroll = (targetId, e) => {
+        const path = window.location.pathname;
+        const isIndexPage = path.endsWith('/') || path.endsWith('index.html');
+        
+        // Cerrar menú móvil si está abierto
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileMenu && !mobileMenu.classList.contains('invisible')) {
+            mobileMenu.classList.add('opacity-0', 'scale-95', 'invisible');
+        }
+
+        if (!targetId || targetId.length <= 1) return;
+
+        const target = document.querySelector(targetId);
+        if (!target) {
+            if (!isIndexPage) {
+                e.preventDefault();
+                window.location.href = 'index.html' + targetId;
+            }
+            return;
+        }
+
+        e.preventDefault();
+        
+        // Scroll simplificado - una sola llamada
+        const headerHeight = document.querySelector('.sticky')?.offsetHeight || 0;
+        const offsetPosition = Math.max(0, target.offsetTop - headerHeight);
+        
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
+    };
+
+    // Event listeners optimizados
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const targetId = this.getAttribute('href');
+            handleSmoothScroll(targetId, e);
+        });
+    });
+
+    // Enlaces a index.html simplificados
+    document.querySelectorAll('a[href^="index.html#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             const path = window.location.pathname;
             const isIndexPage = path.endsWith('/') || path.endsWith('index.html');
-            const targetId = this.getAttribute('href');
-
-            // Cierra el menú móvil si está abierto, sin importar la página
-            const mobileMenu = document.getElementById('mobile-menu');
-            if (mobileMenu && !mobileMenu.classList.contains('invisible')) {
-                mobileMenu.classList.add('opacity-0', 'scale-95', 'invisible');
-            }
-
-            // Si estamos en la página principal, hacemos scroll suave
-            if (isIndexPage && targetId.length > 1) {
-                e.preventDefault(); // Prevenimos el salto brusco
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth', // ¡Aquí está la magia del scroll suave!
-                        block: 'start'
-                    });
+            
+            if (!isIndexPage) {
+                e.preventDefault();
+                // Cerrar menú móvil
+                const mobileMenu = document.getElementById('mobile-menu');
+                if (mobileMenu && !mobileMenu.classList.contains('invisible')) {
+                    mobileMenu.classList.add('opacity-0', 'scale-95', 'invisible');
                 }
-            } 
-            // Si estamos en una subpágina, navegamos a la sección en index.html
-            else if (!isIndexPage && targetId.length > 1) {
-                // No prevenimos la acción, solo nos aseguramos de ir al lugar correcto
-                window.location.href = 'index.html' + targetId;
+                window.location.href = this.getAttribute('href');
             }
         });
     });
@@ -123,6 +218,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const accordionContent = button.nextElementSibling;
             const icon = button.querySelector('svg');
             const isActive = accordionContent.style.maxHeight && accordionContent.style.maxHeight !== '0px';
+
+            // En móviles: cerrar cualquier otra abierta
+            const isMobileView = window.innerWidth <= 767;
+            if (isMobileView && !isActive) {
+                document.querySelectorAll('.accordion-content').forEach(content => {
+                    if (content !== accordionContent && content.style.maxHeight && content.style.maxHeight !== '0px') {
+                        content.style.maxHeight = '0px';
+                        const parentButton = content.previousElementSibling;
+                        const parentIcon = parentButton ? parentButton.querySelector('svg') : null;
+                        if (parentIcon) parentIcon.style.transform = '';
+                    }
+                });
+            }
+
             accordionContent.style.maxHeight = isActive ? '0px' : accordionContent.scrollHeight + 'px';
             if (icon) { icon.style.transform = isActive ? '' : 'rotate(180deg)'; }
         });
@@ -131,14 +240,17 @@ document.addEventListener('DOMContentLoaded', () => {
     function initYouTubeFacades() {
         const facades = document.querySelectorAll('.youtube-fachada');
         facades.forEach(facade => {
-            facade.addEventListener('click', () => {
+            facade.addEventListener('click', (e) => {
                 const videoId = facade.dataset.videoid;
+                if (!videoId) return;
+                
                 const iframe = document.createElement('iframe');
-                iframe.setAttribute('src', `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`);
-                iframe.setAttribute('frameborder', '0');
-                iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
-                iframe.setAttribute('allowfullscreen', '');
-                iframe.setAttribute('title', 'Reproductor de video de YouTube');
+                iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+                iframe.frameBorder = '0';
+                iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+                iframe.allowFullscreen = true;
+                iframe.title = 'Reproductor de video de YouTube';
+                
                 facade.innerHTML = '';
                 facade.appendChild(iframe);
                 facade.classList.add('video-loaded');
@@ -146,4 +258,30 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     initYouTubeFacades();
+
+    // Manejo de hash simplificado
+    const handleHashScroll = () => {
+        const path = window.location.pathname;
+        const isIndexPage = path.endsWith('/') || path.endsWith('index.html');
+        
+        if (isIndexPage && window.location.hash) {
+            const target = document.querySelector(window.location.hash);
+            if (target) {
+                const headerHeight = document.querySelector('.sticky')?.offsetHeight || 0;
+                const offsetPosition = Math.max(0, target.offsetTop - headerHeight);
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }
+    };
+
+    // Scroll inicial con hash
+    if (window.location.hash) {
+        setTimeout(handleHashScroll, 100);
+    }
+
+    // Cambios de hash
+    window.addEventListener('hashchange', handleHashScroll);
 });

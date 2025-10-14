@@ -1,13 +1,118 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-T37SGWVK');</script>
-    <!-- End Google Tag Manager -->
+    <!-- Google Tag Manager - Optimizado para reducir reflows -->
+    <script>
+      // Inicializar dataLayer inmediatamente para evitar errores
+      window.dataLayer = window.dataLayer || [];
+      
+      // Función optimizada para cargar GTM sin causar reflows
+      function loadGTMOptimized() {
+        // Usar requestIdleCallback para cargar en tiempo libre del navegador
+        if (window.requestIdleCallback) {
+          requestIdleCallback(function() {
+            loadGTMScripts();
+          }, { timeout: 2000 });
+        } else {
+          setTimeout(loadGTMScripts, 100);
+        }
+      }
+      
+      function loadGTMScripts() {
+        // Cargar GTM
+        (function(w,d,s,l,i){
+          w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+          var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+          j.async=true;j.defer=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-T37SGWVK');
+        
+        // Cargar gtag después de GTM
+        var gtagScript = document.createElement('script');
+        gtagScript.async = true;
+        gtagScript.defer = true;
+        gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=AW-17323286248';
+        document.head.appendChild(gtagScript);
+        
+        gtagScript.onload = function() {
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'AW-17323286248');
+        };
+      }
+      
+      // Cargar GTM después de la interacción del usuario o timeout
+      let gtmLoaded = false;
+      function loadGTMOnInteraction() {
+        if (!gtmLoaded) {
+          gtmLoaded = true;
+          loadGTMOptimized();
+          // Remover listeners después de cargar
+          document.removeEventListener('click', loadGTMOnInteraction);
+          document.removeEventListener('scroll', loadGTMOnInteraction);
+          document.removeEventListener('touchstart', loadGTMOnInteraction);
+        }
+      }
+      
+      // Cargar GTM en la primera interacción del usuario
+      document.addEventListener('click', loadGTMOnInteraction, { passive: true });
+      document.addEventListener('scroll', loadGTMOnInteraction, { passive: true });
+      document.addEventListener('touchstart', loadGTMOnInteraction, { passive: true });
+      
+      // Fallback: cargar después de 3 segundos si no hay interacción
+      setTimeout(function() {
+        if (!gtmLoaded) {
+          loadGTMOnInteraction();
+        }
+      }, 3000);
+    </script>
+    
+    <!-- MS Clarity - Optimizado para reducir reflows -->
+    <script>
+      // Cargar Clarity de forma diferida para evitar reflows
+      function loadClarityOptimized() {
+        if (window.requestIdleCallback) {
+          requestIdleCallback(function() {
+            loadClarityScript();
+          }, { timeout: 3000 });
+        } else {
+          setTimeout(loadClarityScript, 200);
+        }
+      }
+      
+      function loadClarityScript() {
+        (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.defer=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "tie7wvk0zd");
+      }
+      
+      // Cargar Clarity después de la interacción del usuario o timeout
+      let clarityLoaded = false;
+      function loadClarityOnInteraction() {
+        if (!clarityLoaded) {
+          clarityLoaded = true;
+          loadClarityOptimized();
+          // Remover listeners después de cargar
+          document.removeEventListener('click', loadClarityOnInteraction);
+          document.removeEventListener('scroll', loadClarityOnInteraction);
+          document.removeEventListener('touchstart', loadClarityOnInteraction);
+        }
+      }
+      
+      // Cargar Clarity en la primera interacción del usuario
+      document.addEventListener('click', loadClarityOnInteraction, { passive: true });
+      document.addEventListener('scroll', loadClarityOnInteraction, { passive: true });
+      document.addEventListener('touchstart', loadClarityOnInteraction, { passive: true });
+      
+      // Fallback: cargar después de 4 segundos si no hay interacción
+      setTimeout(function() {
+        if (!clarityLoaded) {
+          loadClarityOnInteraction();
+        }
+      }, 4000);
+    </script>
     
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -26,22 +131,6 @@
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap"></noscript>
 
-    <!-- Pre-carga definitiva de la imagen del LCP -->
-    <link
-      rel="preload"
-      as="image"
-      href="https://i.postimg.cc/ZRjwVtbR/clean-click-hero-360-mobile.webp"
-      media="(max-width: 639px)"
-      fetchpriority="high"
-    />
-    <link
-      rel="preload"
-      as="image"
-      href="https://i.postimg.cc/1tQ9PzXC/clean-click-hero-500.webp"
-      media="(min-width: 640px)"
-      fetchpriority="high"
-    />
-
     <style>
       /* Critical CSS for Above-the-Fold Content & FOUT Prevention */
       body {
@@ -49,16 +138,42 @@
         background-color: #f8fafc;
         color: #334155;
         line-height: 1.6;
+        scroll-behavior: smooth;
         opacity: 0;
         transition: opacity 0.4s ease-in;
-        scroll-behavior: smooth;
+      }
+      /* Scroll margin para secciones con ancla */
+      section[id] {
+        scroll-margin-top: var(--header-height, 80px);
+      }
+      
+      /* Optimizaciones específicas para móviles */
+      @media (max-width: 768px) {
+        /* Mejorar rendimiento de scroll en móviles */
+        * {
+          -webkit-overflow-scrolling: touch;
+        }
+        
+        /* Optimizar animaciones para móviles */
+        .accordion-content {
+          transition: max-height 0.2s ease-out;
+        }
+        
+        /* Mejorar renderizado de imágenes en móviles */
+        img {
+          image-rendering: -webkit-optimize-contrast;
+          image-rendering: crisp-edges;
+        }
+        
+        /* Optimizar transformaciones */
+        .youtube-fachada, .mobile-menu {
+          transform: translateZ(0);
+          -webkit-transform: translateZ(0);
+        }
       }
       .header-logo {
         height: 48px;
         width: 77px;
-      }
-      section[id] {
-        scroll-margin-top: 140px;
       }
       .sticky {
         position: sticky;
@@ -80,14 +195,11 @@
       .font-black {
         font-weight: 900;
       }
-      .text-3xl {
-        font-size: 1.875rem;
-      }
-      .md\:text-4xl {
+      .text-4xl {
         font-size: 2.25rem;
       }
-      .leading-tight {
-        line-height: 1.25;
+      .md\:text-5xl {
+        font-size: 3rem;
       }
       .bg-brand-blue-light {
         background-color: #eff6ff;
@@ -98,10 +210,6 @@
       .bg-brand-blue-dark {
         background-color: #0f172a;
       }
-      .text-brand-cyan {
-        color: #06b6d4;
-      }
-
       .btn-primary {
         background-color: #1e40af;
         color: white;
@@ -111,6 +219,17 @@
         background-color: #1d4ed8;
         transform: translateY(-2px);
       }
+
+      .btn-secondary {
+        background-color: #06b6d4; /* Mismo color base que el botón flotante FAQ */
+        color: #ffffff;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+      .btn-secondary:hover {
+        background-color: #0891b2; /* Mismo hover que el botón flotante FAQ */
+        transform: translateY(-2px);
+      }
+
 
       .accordion-content {
         max-height: 0;
@@ -130,6 +249,21 @@
       .animated-banner-text {
         animation: text-color-pulse 3s ease-in-out infinite;
       }
+
+      @keyframes brand-blue-bg-pulse {
+        0% { background-color: #1e3a8a; }
+        25% { background-color: #1e40af; }
+        50% { background-color: #2563eb; }
+        75% { background-color: #1e40af; }
+        100% { background-color: #1e3a8a; }
+      }
+      @keyframes brand-cyan-bg-pulse {
+        0% { background-color: #06b6d4; }
+        50% { background-color: #0891b2; }
+        100% { background-color: #06b6d4; }
+      }
+      .pulse-brand-blue { animation: brand-blue-bg-pulse 3s ease-in-out infinite; }
+      .pulse-brand-cyan { animation: brand-cyan-bg-pulse 3s ease-in-out infinite; }
 
       @keyframes slideInFromRight {
         from {
@@ -158,78 +292,175 @@
         animation: slideOutToLeft 0.5s ease-out forwards;
       }
 
-      /* Styles for YouTube Facade */
-      .youtube-fachada {
-        position: relative;
-        cursor: pointer;
-        overflow: hidden;
-        border-radius: 1rem;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-          0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        background-color: #e0e0e0;
+      /* CSS crítico para prevenir FOUT y elementos mal renderizados */
+      .text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+      .md\:text-5xl { font-size: 3rem; line-height: 1; }
+      .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+      .text-2xl { font-size: 1.5rem; line-height: 2rem; }
+      .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+      .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+      .text-base { font-size: 1rem; line-height: 1.5rem; }
+      .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+      .text-xs { font-size: 0.75rem; line-height: 1rem; }
+      
+      /* Prevenir elementos gigantes y asegurar dimensiones correctas */
+      img { max-width: 100%; height: auto; display: block; }
+      svg { max-width: 100%; height: auto; display: block; }
+      
+      /* CSS crítico para elementos esenciales */
+      .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+      .flex { display: flex; }
+      .grid { display: grid; }
+      .hidden { display: none; }
+      .block { display: block; }
+      .inline-block { display: inline-block; }
+      .relative { position: relative; }
+      .absolute { position: absolute; }
+      .fixed { position: fixed; }
+      .sticky { position: sticky; }
+      .top-0 { top: 0; }
+      .bottom-0 { bottom: 0; }
+      .left-0 { left: 0; }
+      .right-0 { right: 0; }
+      .z-50 { z-index: 50; }
+      .w-full { width: 100%; }
+      .h-full { height: 100%; }
+      .w-6 { width: 1.5rem; }
+      .h-6 { height: 1.5rem; }
+      .w-8 { width: 2rem; }
+      .h-8 { height: 2rem; }
+      .w-12 { width: 3rem; }
+      .h-12 { height: 3rem; }
+      
+      /* Colores críticos para elementos importantes */
+      .bg-white { background-color: #ffffff; }
+      .bg-white\/95 { background-color: rgba(255, 255, 255, 0.95); }
+      .bg-slate-700 { background-color: #334155; }
+      .bg-blue-600 { background-color: #2563eb; }
+      .bg-brand-blue { background-color: #1e40af; }
+      .bg-brand-blue-dark { background-color: #1e3a8a; }
+      .bg-brand-cyan { background-color: #06b6d4; }
+      .text-white { color: #ffffff; }
+      .text-slate-700 { color: #334155; }
+      .text-slate-800 { color: #1e293b; }
+      .text-slate-900 { color: #0f172a; }
+      
+      /* Backdrop blur para header */
+      .backdrop-blur-sm { backdrop-filter: blur(4px); }
+      
+      /* Spacing crítico */
+      .p-2 { padding: 0.5rem; }
+      .p-3 { padding: 0.75rem; }
+      .p-4 { padding: 1rem; }
+      .px-4 { padding-left: 1rem; padding-right: 1rem; }
+      .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+      .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+      .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+      .m-0 { margin: 0; }
+      .mx-auto { margin-left: auto; margin-right: auto; }
+      
+      /* Border y border-radius críticos */
+      .border { border-width: 1px; border-style: solid; border-color: #e5e7eb; }
+      .rounded { border-radius: 0.25rem; }
+      .rounded-lg { border-radius: 0.5rem; }
+      .rounded-full { border-radius: 9999px; }
+      .rounded-xl { border-radius: 0.75rem; }
+      
+      /* Shadow críticos */
+      .shadow-sm { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+      .shadow { box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); }
+      .shadow-xl { box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); }
+      .shadow-2xl { box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25); }
+      
+      /* Spacing adicional crítico */
+      .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+      .py-16 { padding-top: 4rem; padding-bottom: 4rem; }
+      .py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+      .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+      .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+      .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+      .mt-4 { margin-top: 1rem; }
+      .mt-8 { margin-top: 2rem; }
+      .mt-12 { margin-top: 3rem; }
+      .mb-3 { margin-bottom: 0.75rem; }
+      .mb-8 { margin-bottom: 2rem; }
+      
+      /* Layout crítico adicional */
+      .justify-between { justify-content: space-between; }
+      .justify-center { justify-content: center; }
+      .items-center { align-items: center; }
+      .items-stretch { align-items: stretch; }
+      .text-center { text-align: center; }
+      .text-left { text-align: left; }
+      .space-x-6 > * + * { margin-left: 1.5rem; }
+      .space-x-3 > * + * { margin-left: 0.75rem; }
+      .space-y-2 > * + * { margin-top: 0.5rem; }
+      .gap-8 { gap: 2rem; }
+      .gap-3 { gap: 0.75rem; }
+      
+      /* Responsive crítico */
+      @media (min-width: 640px) {
+        .sm\:hidden { display: none; }
+        .sm\:px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+        .sm\:p-3 { padding: 0.75rem; }
+        .sm\:space-x-3 > * + * { margin-left: 0.75rem; }
+        .sm\:text-sm { font-size: 0.875rem; line-height: 1.25rem; }
       }
-      .youtube-fachada img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.3s ease;
-        border: 0;
+      
+      @media (min-width: 768px) {
+        .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .md\:text-left { text-align: left; }
+        .md\:border-r { border-right-width: 1px; }
+        .md\:border-slate-200 { border-color: #e2e8f0; }
       }
-      .youtube-fachada:hover img {
-        transform: scale(1.05);
+      
+      @media (min-width: 1024px) {
+        .lg\:flex { display: flex; }
+        .lg\:hidden { display: none; }
+        .lg\:inline-flex { display: inline-flex; }
+        .lg\:flex-row { flex-direction: row; }
+        .lg\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        .lg\:items-stretch { align-items: stretch; }
+        .lg\:text-left { text-align: left; }
+        .lg\:h-7 { height: 1.75rem; }
       }
-      .youtube-fachada::before {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 70px;
-        height: 50px;
-        background-color: rgba(0, 0, 0, 0.6);
-        border-radius: 10px;
-        transition: background-color 0.3s ease;
-      }
-      .youtube-fachada::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-40%, -50%);
-        width: 0;
-        height: 0;
-        border-style: solid;
-        border-width: 15px 0 15px 26px;
-        border-color: transparent transparent transparent white;
-      }
-      .youtube-fachada:hover::before {
-        background-color: rgba(255, 0, 0, 0.8);
-      }
-      .youtube-fachada.video-loaded::before,
-      .youtube-fachada.video-loaded::after {
-        display: none;
-      }
-      .youtube-fachada iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border: 0;
-      }
+      
+      /* Asegurar que el body no sea visible hasta que todo esté listo */
+      body { opacity: 0; transition: opacity 0.4s ease-in; }
+      body.loaded { opacity: 1; }
+
     </style>
+
+    <!-- Pre-carga definitiva de la imagen del LCP -->
+    <link
+      rel="preload"
+      as="image"
+      href="https://i.postimg.cc/ZRjwVtbR/clean-click-hero-360-mobile.webp"
+      media="(max-width: 639px)"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="https://i.postimg.cc/1tQ9PzXC/clean-click-hero-500.webp"
+      media="(min-width: 640px)"
+      fetchpriority="high"
+    />
+
   </head>
   <body class="text-slate-700">
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T37SGWVK"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-
-    <!-- Contenedor Sticky para Banner y Header -->
+    
     <div class="sticky top-0 z-50">
-      <!-- Banner de Horario de Atención -->
       <div
-        class="bg-brand-blue-dark text-white text-center py-2 px-4 text-base font-medium"
+        class="text-white text-center py-2 px-4 text-base font-medium"
+        style="background-color: #0f172a;"
       >
         <div class="animated-banner-text">
           <p>Horario de atención: <u>7 de la mañana a 12 de la noche</u></p>
@@ -238,9 +469,6 @@
           </p>
         </div>
       </div>
-      <!-- Fin del Banner -->
-
-      <!-- Header -->
       <header class="bg-white/95 backdrop-blur-sm shadow-sm">
         <div
           class="container mx-auto px-6 py-3 flex justify-between items-center"
@@ -254,7 +482,7 @@
               height="48"
             />
             <span class="ml-2 text-base font-bold text-slate-800 leading-tight"
-              >Clean Click<br class="sm:hidden" />Aroma a Limpio</span
+              >Clean Click<br class="sm:hidden" /> Aroma a Limpio</span
             >
           </a>
           <nav class="hidden lg:flex items-center space-x-6">
@@ -336,8 +564,8 @@
             id="cta-header"
             class="open-chat-popup hidden lg:inline-flex flex-col items-center btn-primary font-bold py-2 px-6 rounded-full shadow-lg text-center"
           >
-            <span>Contacta Aquí</span>
-            <span class="text-xs font-normal">Atención 7am - 12am</span>
+            <span id="cta-header">Contacta Aquí</span>
+            <span class="text-xs font-normal" id="cta-header">Atención 7am - 12am</span>
           </button>
           <div class="lg:hidden">
             <button
@@ -451,8 +679,8 @@
               id="cta-mobile-menu"
               class="open-chat-popup mt-2 w-full btn-primary font-bold py-3 px-6 rounded-full shadow-lg inline-flex flex-col items-center"
             >
-              <span>Contacta Aquí</span>
-              <span class="text-xs font-normal mt-1">Atención 7am - 12am</span>
+              <span id="cta-mobile-menu">Contacta Aquí</span>
+              <span class="text-xs font-normal mt-1" id="cta-mobile-menu">Atención 7am - 12am</span>
             </button>
           </nav>
         </div>
@@ -482,26 +710,23 @@
                 Somos <strong class="text-brand-blue">Clean Click</strong>,
                 expertos en limpieza para tu hogar.
               </p>
-              <div class="mt-8">
+              <div class="mt-8 flex flex-col items-center gap-3 lg:flex-row lg:items-stretch">
                 <button
                   id="cta-hero"
                   class="open-chat-popup inline-flex flex-col items-center btn-primary text-lg font-bold py-3 px-10 rounded-full shadow-xl transform hover:scale-105 transition-transform"
                 >
-                  <span>Contáctanos Aquí</span>
-                  <span class="text-sm font-normal mt-1"
+                  <span id="cta-hero">Contáctanos Aquí</span>
+                  <span class="text-sm font-normal mt-1" id="cta-hero"
                     >Atención 7am - 12am</span
                   >
                 </button>
-                  <button
-                  id="cta-faq"
-                  class="open-chat-popup inline-flex flex-col items-center btn-primary text-lg font-bold py-3 px-10 rounded-full shadow-xl transform hover:scale-105 transition-transform"
+                <a
+                  href="#faq"
+                  id="cta-hero-faq"
+                  class="inline-flex flex-col items-center btn-secondary text-lg font-bold py-3 px-10 rounded-full shadow-xl transform hover:scale-105 transition-transform text-center"
                 >
-                  <span href="#faq">¡Tienes dudas?</span>
-                  <span href="#faq" class="text-sm font-normal mt-1"
-                    >Revisa aquí!</span
-                  >
-                </button>
-                
+                  <span>¿Tienes dudas?<br />Resuélvelas aquí</span>
+                </a>
               </div>
             </div>
             <!-- Columna de Imagen -->
@@ -557,10 +782,10 @@
       </section>
 
       <!-- Rotating Phrases Banner -->
-      <section class="bg-brand-blue-dark py-4">
+      <section class="py-4" style="background-color: #0f172a;">
         <div class="max-w-5xl mx-auto px-2 sm:px-6 text-center">
           <div
-            id="rotating-text-container"
+            id="rotating-text-container"#0f172a
             class="relative h-14 lg:h-7 flex items-center justify-center overflow-hidden"
           ></div>
         </div>
@@ -818,6 +1043,7 @@
             <!-- Servicio 1: Sillones -->
             <a
               href="servicio-sillones.html"
+              id="nav-sillones"
               class="block bg-white p-8 rounded-2xl shadow-sm border border-transparent hover:border-brand-blue hover:shadow-lg transform hover:-translate-y-2 transition-all duration-300 flex flex-col"
             >
               <div
@@ -854,6 +1080,7 @@
             <!-- Servicio 2: Alfombras -->
             <a
               href="servicio-alfombras.html"
+              id="nav-alfombras"
               class="block bg-white p-8 rounded-2xl shadow-sm border border-transparent hover:border-brand-blue hover:shadow-lg transform hover:-translate-y-2 transition-all duration-300 flex flex-col"
             >
               <div
@@ -892,6 +1119,7 @@
             <!-- Servicio 3: Colchones -->
             <a
               href="servicio-colchones.html"
+              id="nav-colchones"
               class="block bg-white p-8 rounded-2xl shadow-sm border border-transparent hover:border-brand-blue hover:shadow-lg transform hover:-translate-y-2 transition-all duration-300 flex flex-col"
             >
               <div
@@ -1028,7 +1256,7 @@
       </section>
 
       <!-- Testimonios -->
-      <section id="testimonios" class="bg-brand-blue-light py-20">
+      <section id="testimonios" class="bg-brand-blue-light pt-10 pb-10 md:pt-20 md:pb-20">
         <div class="container mx-auto px-6 text-center">
           <h2 class="text-3xl font-bold text-slate-900">
             Clientes Satisfechos con Nuestro Trabajo
@@ -1059,7 +1287,7 @@
                   src="https://i.postimg.cc/0j5PMHp7/clean-click-testimonio-01-450.webp"
                   alt="Testimonio de cliente 1"
                   class="w-full h-auto rounded-2xl shadow-lg"
-                  loading="lazy"
+                  loading="eager"
                   decoding="async"
                   width="450"
                   height="800"
@@ -1084,7 +1312,7 @@
                   src="https://i.postimg.cc/SRZqW7r3/clean-click-testimonio-02-450.webp"
                   alt="Testimonio de cliente 2"
                   class="w-full h-auto rounded-2xl shadow-lg"
-                  loading="lazy"
+                  loading="eager"
                   decoding="async"
                   width="450"
                   height="800"
@@ -1109,7 +1337,7 @@
                   src="https://i.postimg.cc/htQgdm7Z/clean-click-testimonio-03-450.webp"
                   alt="Testimonio de cliente 3"
                   class="w-full h-auto rounded-2xl shadow-lg"
-                  loading="lazy"
+                  loading="eager"
                   decoding="async"
                   width="450"
                   height="800"
@@ -1134,7 +1362,7 @@
                   src="https://i.postimg.cc/yYbsxjWS/clean-click-testimonio-04-450.webp"
                   alt="Testimonio de cliente 4"
                   class="w-full h-auto rounded-2xl shadow-lg"
-                  loading="lazy"
+                  loading="eager"
                   decoding="async"
                   width="450"
                   height="800"
@@ -1150,49 +1378,64 @@
               data-videoid="pHdzZYcw5Gc"
               aria-label="Reproducir testimonio en video 1"
             >
-              <img
-                src="https://i.ytimg.com/vi/pHdzZYcw5Gc/hqdefault.jpg"
-                id="miniatura-1"
-                alt="Miniatura del testimonio 1"
-                loading="lazy"
-                width="480"
-                height="360"
-              />
+              <picture>
+                <source media="(max-width: 639px)" srcset="https://i.postimg.cc/y6cF53tJ/img-video1.webp" width="280" height="210">
+                <img
+                  src="https://i.postimg.cc/y6cF53tJ/img-video1.webp"
+                  id="miniatura-1"
+                  alt="Miniatura del testimonio 1"
+                  loading="eager"
+                  width="364"
+                  height="273"
+                  fetchpriority="low"
+                  decoding="async"
+                />
+              </picture>
             </div>
             <div
               class="youtube-fachada aspect-video"
               data-videoid="Yx4lKEeCwss"
               aria-label="Reproducir testimonio en video 2"
             >
-              <img
-                src="https://i.ytimg.com/vi/Yx4lKEeCwss/hqdefault.jpg"
-                id="miniatura-2"
-                alt="Miniatura del testimonio 2"
-                loading="lazy"
-                width="480"
-                height="360"
-              />
+              <picture>
+                <source media="(max-width: 639px)" srcset="https://i.postimg.cc/tRWhfnwV/img-video2.webp" width="280" height="210">
+                <img
+                  src="https://i.postimg.cc/tRWhfnwV/img-video2.webp"
+                  id="miniatura-2"
+                  alt="Miniatura del testimonio 2"
+                  loading="eager"
+                  width="364"
+                  height="273"
+                  fetchpriority="low"
+                  decoding="async"
+                />
+              </picture>
             </div>
             <div
               class="youtube-fachada aspect-video"
               data-videoid="gtggraD_N_w"
               aria-label="Reproducir testimonio en video 3"
             >
-              <img
-                src="https://i.ytimg.com/vi/gtggraD_N_w/hqdefault.jpg"
-                id="miniatura-3"
-                alt="Miniatura del testimonio 3"
-                loading="lazy"
-                width="480"
-                height="360"
-              />
+              <picture>
+                <source media="(max-width: 639px)" srcset="https://i.postimg.cc/P5RpNd0r/img-video3.webp" width="280" height="210">
+                <img
+                  src="https://i.postimg.cc/P5RpNd0r/img-video3.webp"
+                  id="miniatura-3"
+                  alt="Miniatura del testimonio 3"
+                  loading="lazy"
+                  width="364"
+                  height="273"
+                  fetchpriority="low"
+                  decoding="async"
+                />
+              </picture>
             </div>
           </div>
         </div>
       </section>
 
       <!-- FAQ Section -->
-      <section id="faq" class="bg-white py-20">
+      <section id="faq" class="bg-white pt-10 pb-20 md:pt-20 md:pb-20">
         <div class="container mx-auto px-6">
           <h2 class="text-3xl font-bold text-center text-slate-900">
             Resolvemos tus Dudas
@@ -1207,15 +1450,17 @@
                   id="faq-1"
                   class="accordion-toggle w-full text-left p-5 font-semibold flex justify-between items-center text-slate-800"
                 >
-                  <span>¿Cuál es el área de cobertura?</span>
+                  <span id="faq-1">¿Cuál es el área de cobertura?</span>
                   <svg
                     class="w-4 h-4 transition-transform shrink-0"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 640 640"
+                    id="faq-1"
                   >
                     <path
                       fill="#1e293b"
+                      id="faq-1"
                       d="M352 128C352 110.3 337.7 96 320 96C302.3 96 288 110.3 288 128L288 288L128 288C110.3 288 96 302.3 96 320C96 337.7 110.3 352 128 352L288 352L288 512C288 529.7 302.3 544 320 544C337.7 544 352 529.7 352 512L352 352L512 352C529.7 352 544 337.7 544 320C544 302.3 529.7 288 512 288L352 288L352 128z"
                     />
                   </svg>
@@ -1233,15 +1478,17 @@
                   id="faq-2"
                   class="accordion-toggle w-full text-left p-5 font-semibold flex justify-between items-center text-slate-800"
                 >
-                  <span>¿Cuánto demora la limpieza?</span>
+                  <span id="faq-2">¿Cuánto demora la limpieza?</span>
                   <svg
                     class="w-4 h-4 transition-transform shrink-0"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 640 640"
+                    id="faq-2"
                   >
                     <path
                       fill="#1e293b"
+                      id="faq-2"
                       d="M352 128C352 110.3 337.7 96 320 96C302.3 96 288 110.3 288 128L288 288L128 288C110.3 288 96 302.3 96 320C96 337.7 110.3 352 128 352L288 352L288 512C288 529.7 302.3 544 320 544C337.7 544 352 529.7 352 512L352 352L512 352C529.7 352 544 337.7 544 320C544 302.3 529.7 288 512 288L352 288L352 128z"
                     />
                   </svg>
@@ -1258,15 +1505,17 @@
                   id="faq-3"
                   class="accordion-toggle w-full text-left p-5 font-semibold flex justify-between items-center text-slate-800"
                 >
-                  <span>¿Qué tan rápido puedo agendar?</span>
+                  <span id="faq-3">¿Qué tan rápido puedo agendar?</span>
                   <svg
                     class="w-4 h-4 transition-transform shrink-0"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 640 640"
+                    id="faq-3"
                   >
                     <path
                       fill="#1e293b"
+                      id="faq-3"
                       d="M352 128C352 110.3 337.7 96 320 96C302.3 96 288 110.3 288 128L288 288L128 288C110.3 288 96 302.3 96 320C96 337.7 110.3 352 128 352L288 352L288 512C288 529.7 302.3 544 320 544C337.7 544 352 529.7 352 512L352 352L512 352C529.7 352 544 337.7 544 320C544 302.3 529.7 288 512 288L352 288L352 128z"
                     />
                   </svg>
@@ -1284,15 +1533,17 @@
                   id="faq-4"
                   class="accordion-toggle w-full text-left p-5 font-semibold flex justify-between items-center text-slate-800"
                 >
-                  <span>Si escribo hoy, ¿cuándo pueden venir?</span>
+                  <span id="faq-4">Si escribo hoy, ¿cuándo pueden venir?</span>
                   <svg
                     class="w-4 h-4 transition-transform shrink-0"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 640 640"
+                    id="faq-4"
                   >
                     <path
                       fill="#1e293b"
+                      id="faq-4"
                       d="M352 128C352 110.3 337.7 96 320 96C302.3 96 288 110.3 288 128L288 288L128 288C110.3 288 96 302.3 96 320C96 337.7 110.3 352 128 352L288 352L288 512C288 529.7 302.3 544 320 544C337.7 544 352 529.7 352 512L352 352L512 352C529.7 352 544 337.7 544 320C544 302.3 529.7 288 512 288L352 288L352 128z"
                     />
                   </svg>
@@ -1310,15 +1561,17 @@
                   id="faq-5"
                   class="accordion-toggle w-full text-left p-5 font-semibold flex justify-between items-center text-slate-800"
                 >
-                  <span>¿Se eliminan todas las manchas?</span>
+                  <span id="faq-5">¿Se eliminan todas las manchas?</span>
                   <svg
                     class="w-4 h-4 transition-transform shrink-0"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 640 640"
+                    id="faq-5"
                   >
                     <path
                       fill="#1e293b"
+                      id="faq-5"
                       d="M352 128C352 110.3 337.7 96 320 96C302.3 96 288 110.3 288 128L288 288L128 288C110.3 288 96 302.3 96 320C96 337.7 110.3 352 128 352L288 352L288 512C288 529.7 302.3 544 320 544C337.7 544 352 529.7 352 512L352 352L512 352C529.7 352 544 337.7 544 320C544 302.3 529.7 288 512 288L352 288L352 128z"
                     />
                   </svg>
@@ -1340,15 +1593,17 @@
                   id="faq-6"
                   class="accordion-toggle w-full text-left p-5 font-semibold flex justify-between items-center text-slate-800"
                 >
-                  <span>¿El servicio tiene garantía?</span>
+                  <span id="faq-6">¿El servicio tiene garantía?</span>
                   <svg
                     class="w-4 h-4 transition-transform shrink-0"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 640 640"
+                    id="faq-6"
                   >
                     <path
                       fill="#1e293b"
+                      id="faq-6"
                       d="M352 128C352 110.3 337.7 96 320 96C302.3 96 288 110.3 288 128L288 288L128 288C110.3 288 96 302.3 96 320C96 337.7 110.3 352 128 352L288 352L288 512C288 529.7 302.3 544 320 544C337.7 544 352 529.7 352 512L352 352L512 352C529.7 352 544 337.7 544 320C544 302.3 529.7 288 512 288L352 288L352 128z"
                     />
                   </svg>
@@ -1367,15 +1622,17 @@
                   id="faq-7"
                   class="accordion-toggle w-full text-left p-5 font-semibold flex justify-between items-center text-slate-800"
                 >
-                  <span>¿Cuáles son los tiempos de secado?</span>
+                  <span id="faq-7">¿Cuáles son los tiempos de secado?</span>
                   <svg
                     class="w-4 h-4 transition-transform shrink-0"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 640 640"
+                    id="faq-7"
                   >
                     <path
                       fill="#1e293b"
+                      id="faq-7"
                       d="M352 128C352 110.3 337.7 96 320 96C302.3 96 288 110.3 288 128L288 288L128 288C110.3 288 96 302.3 96 320C96 337.7 110.3 352 128 352L288 352L288 512C288 529.7 302.3 544 320 544C337.7 544 352 529.7 352 512L352 352L512 352C529.7 352 544 337.7 544 320C544 302.3 529.7 288 512 288L352 288L352 128z"
                     />
                   </svg>
@@ -1392,15 +1649,17 @@
                   id="faq-8"
                   class="accordion-toggle w-full text-left p-5 font-semibold flex justify-between items-center text-slate-800"
                 >
-                  <span>¿Qué otros tapices limpian?</span>
+                  <span id="faq-8">¿Qué otros tapices limpian?</span>
                   <svg
                     class="w-4 h-4 transition-transform shrink-0"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 640 640"
+                    id="faq-8"
                   >
                     <path
                       fill="#1e293b"
+                      id="faq-8"
                       d="M352 128C352 110.3 337.7 96 320 96C302.3 96 288 110.3 288 128L288 288L128 288C110.3 288 96 302.3 96 320C96 337.7 110.3 352 128 352L288 352L288 512C288 529.7 302.3 544 320 544C337.7 544 352 529.7 352 512L352 352L512 352C529.7 352 544 337.7 544 320C544 302.3 529.7 288 512 288L352 288L352 128z"
                     />
                   </svg>
@@ -1418,15 +1677,17 @@
                   id="faq-9"
                   class="accordion-toggle w-full text-left p-5 font-semibold flex justify-between items-center text-slate-800"
                 >
-                  <span>¿Cómo puedo pagar?</span>
+                  <span id="faq-9">¿Cómo puedo pagar?</span>
                   <svg
                     class="w-4 h-4 transition-transform shrink-0"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 640 640"
+                    id="faq-9"
                   >
                     <path
                       fill="#1e293b"
+                      id="faq-9"
                       d="M352 128C352 110.3 337.7 96 320 96C302.3 96 288 110.3 288 128L288 288L128 288C110.3 288 96 302.3 96 320C96 337.7 110.3 352 128 352L288 352L288 512C288 529.7 302.3 544 320 544C337.7 544 352 529.7 352 512L352 352L512 352C529.7 352 544 337.7 544 320C544 302.3 529.7 288 512 288L352 288L352 128z"
                     />
                   </svg>
@@ -1436,6 +1697,40 @@
                     Aceptamos todos los medios de pago: efectivo, transferencia,
                     débito y tarjeta de crédito.
                   </p>
+                </div>
+              </div>
+              <!-- Pregunta de precios (faq-10) ubicada como décima pregunta -->
+              <div class="bg-slate-50 border border-slate-200 rounded-lg">
+                <button
+                  id="faq-10"
+                  class="accordion-toggle w-full text-left p-5 font-semibold flex justify-between items-center text-slate-800"
+                >
+                  <span id="faq-10">¿Cuánto cuesta el servicio de limpieza a vapor?</span>
+                  <svg
+                    class="w-4 h-4 transition-transform shrink-0"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 640 640"
+                    id="faq-10"
+                  >
+                    <path
+                      fill="#1e293b"
+                      id="faq-10"
+                      d="M352 128C352 110.3 337.7 96 320 96C302.3 96 288 110.3 288 128L288 288L128 288C110.3 288 96 302.3 96 320C96 337.7 110.3 352 128 352L288 352L288 512C288 529.7 302.3 544 320 544C337.7 544 352 529.7 352 512L352 352L512 352C529.7 352 544 337.7 544 320C544 302.3 529.7 288 512 288L352 288L352 128z"
+                    />
+                  </svg>
+                </button>
+                <div class="accordion-content">
+                  <div class="text-slate-600 px-5 pt-0 pb-5">
+                    <p>A continuación te entregamos algunos precios de referencia:</p>
+                    <ul class="list-disc list-inside mt-2 space-y-1">
+                      <li>Colchón dos plazas $24.990</li>
+                      <li>Sofá dos puestos $29.990</li>
+                      <li>Alfombra mediana $26.990</li>
+                      <li>Sofá seccional desde $39.990</li>
+                    </ul>
+                    <p class="mt-3">Se debe considerar que el precio mínimo de visita en la región metropolitana es de $29.990. Si tienes dudas, no te preocupes, escríbenos y te entregaremos una cotización rápidamente.</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1458,15 +1753,15 @@
               id="cta-final"
               class="open-chat-popup inline-flex flex-col items-center bg-white text-brand-blue text-xl font-bold py-3 px-12 rounded-full shadow-xl transform hover:scale-105 transition-transform"
             >
-              <span>¡Sí, Quiero Contactarme Ahora!</span>
-              <span class="text-sm font-normal mt-1">Atención 7am - 12am</span>
+              <span id="cta-final">¡Sí, Quiero Contactarme Ahora!</span>
+              <span class="text-sm font-normal mt-1" id="cta-final">Atención 7am - 12am</span>
             </button>
           </div>
         </div>
       </section>
     </main>
     <!-- Footer -->
-    <footer class="bg-brand-blue-dark text-slate-300">
+    <footer class="text-slate-300" style="background-color: #0f172a;">
       <div class="container mx-auto px-6 pt-16 pb-8">
         <div class="grid md:grid-cols-3 gap-12 text-center md:text-left">
           <!-- Columna 1: Logo y Marca -->
@@ -1501,6 +1796,7 @@
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 640 640"
+                  id="cta-instagram-footer"
                 >
                   <path
                     fill="#d1d5db"
@@ -1589,7 +1885,7 @@
     <!-- Floating Chat Button -->
     <button
       id="cta-flotante"
-      class="open-chat-popup fixed bottom-5 right-5 bg-[#1E40AF] hover:bg-[#1D4ED8] text-white w-16 h-16 rounded-full flex items-center justify-center shadow-2xl transform hover:scale-110 transition-transform z-50"
+      class="open-chat-popup fixed bottom-5 right-5 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-2xl transform hover:scale-110 transition-transform z-50 pulse-brand-blue"
       aria-label="Abrir chat de contacto"
     >
       <svg
@@ -1604,6 +1900,16 @@
         />
       </svg>
     </button>
+
+    <!-- Floating FAQ Button -->
+    <a
+      href="#faq"
+      id="cta-faq-flotante"
+      class="fixed bottom-5 left-5 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-2xl transform hover:scale-110 transition-transform z-50 pulse-brand-cyan"
+      aria-label="Ir a preguntas frecuentes"
+    >
+      <span class="text-2xl font-black">?</span>
+    </a>
 
     <!-- Pop-up de Chat -->
     <div
@@ -1648,7 +1954,7 @@
           </p>
           <div class="mt-6 text-center">
             <a
-              href="https://wa.me/+56957079910?text=Cuéntanos%20qué%20servicio%20te%20interesa%20cotizar"
+              href="https://wa.me/+56950107753?text=Hola,%20quiero%20tener%20más%20información%20de%20sus%20servicios%20de%20limpieza"
               target="_blank"
               id="cta-popup"
               class="inline-block btn-primary font-bold py-2 px-8 rounded-full shadow-md"
@@ -1664,18 +1970,118 @@
       ></div>
     </div>
 
-    <script src="https://cdn.tailwindcss.com" defer></script>
-    <!-- importanción js en diferido -->
+    <!-- Tailwind CSS optimizado para reducir recursos -->
+    <script>
+      // Configuración optimizada de Tailwind CSS
+      window.tailwindConfig = {
+        theme: {
+          extend: {
+            colors: {
+              'brand-blue': '#1e40af',
+              'brand-blue-dark': '#1e3a8a',
+              'brand-blue-light': '#dbeafe',
+              'brand-cyan': '#06b6d4'
+            },
+            fontFamily: {
+              'sans': ['Inter', 'sans-serif']
+            },
+            animation: {
+              'pulse-brand-blue': 'brand-blue-bg-pulse 2s infinite',
+              'pulse-brand-cyan': 'brand-cyan-bg-pulse 2s infinite'
+            },
+            keyframes: {
+              'brand-blue-bg-pulse': {
+                '0%, 100%': { backgroundColor: '#1e40af' },
+                '50%': { backgroundColor: '#1e3a8a' }
+              },
+              'brand-cyan-bg-pulse': {
+                '0%, 100%': { backgroundColor: '#06b6d4' },
+                '50%': { backgroundColor: '#0891b2' }
+              }
+            }
+          }
+        },
+        corePlugins: {
+          // Deshabilitar plugins no utilizados para reducir tamaño
+          preflight: true,
+          container: true,
+          accessibility: false,
+          pointerEvents: true,
+          visibility: true,
+          position: true,
+          inset: true,
+          isolation: false,
+          zIndex: true,
+          order: true,
+          gridColumn: true,
+          gridColumnStart: true,
+          gridColumnEnd: true,
+          gridRow: true,
+          gridRowStart: true,
+          gridRowEnd: true,
+          float: false,
+          clear: false,
+          objectFit: true,
+          objectPosition: true,
+          overflow: true,
+          overscrollBehavior: false,
+          position: true,
+          inset: true,
+          visibility: true,
+          zIndex: true
+        }
+      };
+      
+      // Cargar Tailwind CSS de forma diferida
+      function loadTailwindOptimized() {
+        if (window.requestIdleCallback) {
+          requestIdleCallback(function() {
+            loadTailwindScript();
+          }, { timeout: 1000 });
+        } else {
+          setTimeout(loadTailwindScript, 50);
+        }
+      }
+      
+      function loadTailwindScript() {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.tailwindcss.com';
+        script.defer = true;
+        script.onload = function() {
+          // Aplicar configuración personalizada
+          if (window.tailwind && window.tailwindConfig) {
+            window.tailwind.config(window.tailwindConfig);
+          }
+        };
+        document.head.appendChild(script);
+      }
+      
+      // Cargar Tailwind después de la interacción del usuario o timeout
+      let tailwindLoaded = false;
+      function loadTailwindOnInteraction() {
+        if (!tailwindLoaded) {
+          tailwindLoaded = true;
+          loadTailwindOptimized();
+          // Remover listeners después de cargar
+          document.removeEventListener('click', loadTailwindOnInteraction);
+          document.removeEventListener('scroll', loadTailwindOnInteraction);
+          document.removeEventListener('touchstart', loadTailwindOnInteraction);
+        }
+      }
+      
+      // Cargar Tailwind en la primera interacción del usuario
+      document.addEventListener('click', loadTailwindOnInteraction, { passive: true });
+      document.addEventListener('scroll', loadTailwindOnInteraction, { passive: true });
+      document.addEventListener('touchstart', loadTailwindOnInteraction, { passive: true });
+      
+      // Fallback: cargar después de 1 segundo si no hay interacción
+      setTimeout(function() {
+        if (!tailwindLoaded) {
+          loadTailwindOnInteraction();
+        }
+      }, 1000);
+    </script>
+    <!-- JavaScript optimizado para rendimiento -->
     <script src="main.js" defer></script>
   </body>
 </html>
-
-
-
-
-
-
-
-
-
-
