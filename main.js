@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Enlaces a index.html simplificados
+    // Enlaces a index.html optimizados para scroll automático
     document.querySelectorAll('a[href^="index.html#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             const path = window.location.pathname;
@@ -167,6 +167,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (mobileMenu && !mobileMenu.classList.contains('invisible')) {
                     mobileMenu.classList.add('opacity-0', 'scale-95', 'invisible');
                 }
+                
+                // Guardar el hash para scroll automático después de cargar
+                const targetHash = this.getAttribute('href').split('#')[1];
+                if (targetHash) {
+                    sessionStorage.setItem('pendingScroll', targetHash);
+                }
+                
                 window.location.href = this.getAttribute('href');
             }
         });
@@ -259,27 +266,66 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     initYouTubeFacades();
 
-    // Manejo de hash simplificado
+    // Manejo de hash y scroll pendiente optimizado
     const handleHashScroll = () => {
-    const path = window.location.pathname;
-    const isIndexPage = path.endsWith('/') || path.endsWith('index.html');
-    
-    if (isIndexPage && window.location.hash) {
-            const target = document.querySelector(window.location.hash);
-            if (target) {
-                const headerHeight = document.querySelector('.sticky')?.offsetHeight || 0;
-                const offsetPosition = Math.max(0, target.offsetTop - headerHeight);
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
+        const path = window.location.pathname;
+        const isIndexPage = path.endsWith('/') || path.endsWith('index.html');
+        
+        if (isIndexPage) {
+            let targetHash = window.location.hash.substring(1);
+            
+            // Verificar si hay un scroll pendiente desde sessionStorage
+            const pendingScroll = sessionStorage.getItem('pendingScroll');
+            if (pendingScroll) {
+                targetHash = pendingScroll;
+                sessionStorage.removeItem('pendingScroll');
+                // Actualizar la URL sin recargar
+                window.history.replaceState(null, null, `#${targetHash}`);
+            }
+            
+            if (targetHash) {
+                const target = document.querySelector(`#${targetHash}`);
+                if (target) {
+                    // Esperar un poco más para asegurar que Tailwind esté cargado
+                    setTimeout(() => {
+                        const headerHeight = document.querySelector('.sticky')?.offsetHeight || 0;
+                        const offsetPosition = Math.max(0, target.offsetTop - headerHeight);
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }, 200);
+                }
             }
         }
     };
 
-    // Scroll inicial con hash
-    if (window.location.hash) {
+    // Scroll inicial con hash y scroll pendiente
+    if (window.location.hash || sessionStorage.getItem('pendingScroll')) {
         setTimeout(handleHashScroll, 100);
+    }
+    
+    // También ejecutar después de que Tailwind se cargue
+    const checkAndScroll = () => {
+        if (window.location.hash || sessionStorage.getItem('pendingScroll')) {
+            handleHashScroll();
+        }
+    };
+    
+    // Verificar scroll pendiente después de cargar Tailwind
+    if (window.tailwind) {
+        setTimeout(checkAndScroll, 300);
+    } else {
+        let tailwindCheck = 0;
+        const checkTailwindForScroll = () => {
+            tailwindCheck++;
+            if (window.tailwind || tailwindCheck > 10) {
+                setTimeout(checkAndScroll, 300);
+            } else {
+                setTimeout(checkTailwindForScroll, 100);
+            }
+        };
+        checkTailwindForScroll();
     }
 
     // Cambios de hash
